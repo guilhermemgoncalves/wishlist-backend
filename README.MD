@@ -1,4 +1,3 @@
-
 # Wishlist Backend
 
 ## Overview
@@ -35,6 +34,12 @@ The Wishlist Backend is a robust and scalable solution designed to manage and st
    ```bash
    npm start
    ```
+5. Rebuild Docker (se aplicável):
+   ```bash
+   docker-compose down
+   docker-compose build
+   docker-compose up
+   ```
 
 ## Integration with BFF
 
@@ -48,3 +53,4 @@ We welcome contributions! Please follow our [contribution guidelines](CONTRIBUTI
 
 This project is licensed under the [MIT License](LICENSE).
 
+`

@@ -2,7 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/wishlist-rest-bff" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/wishlist-rest-service" vcs="Git" />
   </component>
 </project>
