@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: wishlist-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: wishlist
+
+  service:
+    build:
+      context: ./wishlist-rest-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/wishlist
+    container_name: wishlist-rest-service
+
+  bff:
+    build:
+      context: ./wishlist-rest-bff
+    ports:
+      - "4000:4000"
+    depends_on:
+      - service
+    container_name: wishlist-rest-bff
+
+volumes:
+  mongo_data:
