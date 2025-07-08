@@ -5,6 +5,8 @@ export function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('Wishlist REST BFF')
     .setDescription('Wishlist REST Backend for Frontend API documentation')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
     .setVersion('1.0')
     .build();
 
