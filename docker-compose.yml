@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mongodb:
-    image: mongo:6
+    image: mongo
     container_name: wishlist-mongo
     ports:
       - "27017:27017"
@@ -11,25 +11,34 @@ services:
     environment:
       MONGO_INITDB_DATABASE: wishlist
 
+  json-server:
+    image: codfish/json-server
+    command: npm run dev
+    ports:
+      - "3000:80"
+    volumes:
+      - ./db.json:/app/db.json
+
   service:
     build:
       context: ./wishlist-rest-service
+    container_name: wishlist-rest-service
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - mongodb
     environment:
       - MONGO_URL=mongodb://mongodb:27017/wishlist
-    container_name: wishlist-rest-service
 
   bff:
     build:
       context: ./wishlist-rest-bff
+    container_name: wishlist-rest-bff
     ports:
-      - "4000:4000"
+      - "3002:3002"
     depends_on:
       - service
-    container_name: wishlist-rest-bff
+      - json-server
 
 volumes:
   mongo_data:

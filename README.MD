@@ -38,7 +38,7 @@ The Wishlist Backend is a robust and scalable solution designed to manage and st
    ```bash
    docker-compose down
    docker-compose build
-   docker-compose up
+   docker-compose up -d
    ```
 
 ## Integration with BFF
