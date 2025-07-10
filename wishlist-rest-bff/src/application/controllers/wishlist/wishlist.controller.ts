@@ -20,6 +20,9 @@ import { Response } from 'express';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
 import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
 import { JwtAuthGuard } from '../../../core/guards/jwt-auth/jwt-auth.guard';
+import { RemoveProductDoc } from '../../documentation/remove-product-doc';
+import { ListWishlistProductsDoc } from '../../documentation/list-products-doc';
+import { CheckExistsDoc } from '../../documentation/check-exists-doc';
 
 @Controller('wishlist')
 @UseGuards(JwtAuthGuard)
@@ -49,7 +52,7 @@ export class WishlistController {
   }
 
   @Delete('items/:productId')
-  @ApiOperation({ summary: 'Remove a wishlist product' })
+  @RemoveProductDoc()
   async remove(
     @Param('productId') productId: string,
     @Res() res: Response,
@@ -70,15 +73,14 @@ export class WishlistController {
   }
 
   @Get('items')
-  @ApiOperation({ summary: 'List all wishlist products' })
+  @ListWishlistProductsDoc()
   list(@Req() req: Request) {
     const userId = String(req['userId'] ?? '');
     return this.service.listProducts(userId);
   }
 
   @Get('items/:productId')
-  @ApiOperation({ summary: 'Checks if a wishlist product exists' })
-  @HttpCode(HttpStatus.OK)
+  @CheckExistsDoc()
   exists(@Param('productId') productId: string, @Req() req: Request) {
     const userId = String(req['userId'] ?? '');
     return this.service.checkIfProductExists(productId, userId);

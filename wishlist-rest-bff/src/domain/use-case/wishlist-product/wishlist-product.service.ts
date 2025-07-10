@@ -5,7 +5,7 @@ import { WishlistProductModel } from '../../models/wishlist-product.model';
 import { AddProductResponse } from '../../../application/dtos/add-product-response.dto';
 import { AddProductRequest } from '../../../application/dtos/add-product.request';
 import { RemoveProductResponse } from '../../../application/dtos/remove-product.response.dto';
-import { WishlistListResponseDto } from '../../../application/dtos/wishlist-list-response.dto';
+import { WishlistListResponse } from '../../../application/dtos/wishlist-list-response.dto';
 import { UserModel } from '../../models/user-model';
 import { UserService } from '../user/user.service';
 import { WishlistHttpClient } from '../../interfaces/wishlist-http-client';
@@ -126,7 +126,7 @@ export class WishlistProductService {
       user: user,
       count: products.length,
       products: products,
-    } as WishlistListResponseDto;
+    } as WishlistListResponse;
   }
 
   private async fetchAllProducts(
