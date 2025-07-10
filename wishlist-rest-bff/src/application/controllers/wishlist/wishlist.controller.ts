@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { AddProductRequest } from '../../dtos/add-product.request';
-import { AddProductDocumentation } from '../../documentation/add-product-documentation';
+import { AddProductDoc } from '../../documentation/add-product-doc';
 import { WishlistProductService } from '../../../domain/use-case/wishlist-product/wishlist-product.service';
 import { Response } from 'express';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
@@ -27,7 +27,7 @@ export class WishlistController {
   constructor(private readonly service: WishlistProductService) {}
 
   @Post('items')
-  @AddProductDocumentation()
+  @AddProductDoc()
   async add(
     @Body(new ValidationPipe()) dto: AddProductRequest,
     @Res() res: Response,

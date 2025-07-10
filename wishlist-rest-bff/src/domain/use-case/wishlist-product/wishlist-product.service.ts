@@ -37,6 +37,13 @@ export class WishlistProductService {
       wishList,
     );
 
+    if (wishList.products.length >= 20) {
+      return {
+        added: false,
+        message: 'Wishlist is full. You can only add up to 20 products.',
+      };
+    }
+
     if (!productIsInWishlist) {
       const wishListProduct: WishlistProductModel = {
         id: product.id,
