@@ -9,7 +9,7 @@ import { ProductModel } from 'src/domain/models/product-model';
 export class ProductHttpClientImpl implements ProductHttpClient {
   constructor(private readonly httpService: HttpService) {}
 
-  async getProductById(productId: string): Promise<ProductModel> {
+  async getById(productId: string): Promise<ProductModel> {
     try {
       const response = this.httpService.get<ProductModel>(
         `${API_URL.JSON_SERVER}/products/${productId}`,

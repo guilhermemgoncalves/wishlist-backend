@@ -1,5 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { getWishlist } from '../../../__mock__/mock';
 import { ProductHttpClient } from '../../interfaces/product-http-client';
 import { ProductModel } from '../../models/product-model';
 import { WishlistProductModel } from '../../models/wishlist-product.model';
@@ -9,6 +8,8 @@ import { RemoveProductResponse } from '../../../application/dtos/remove-product.
 import { WishlistListResponseDto } from '../../../application/dtos/wishlist-list-response.dto';
 import { UserModel } from '../../models/user-model';
 import { UserService } from '../user/user.service';
+import { WishlistHttpClient } from '../../interfaces/wishlist-http-client';
+import { WishlistModel } from '../../models/wishlist-model';
 
 @Injectable()
 export class WishlistProductService {
@@ -16,16 +17,22 @@ export class WishlistProductService {
     @Inject('ProductHttpClient')
     private readonly productHttpClient: ProductHttpClient,
     private readonly userService: UserService,
+    @Inject('WishlistHttpClient')
+    private readonly wishlistHttpClient: WishlistHttpClient,
   ) {}
 
   async addProduct(product: AddProductRequest): Promise<AddProductResponse> {
-    const wishList = getWishlist();
+    const wishList: WishlistModel =
+      await this.wishlistHttpClient.getWishlistByUserId('2');
 
     if (!(await this.productHttpClient.checkIfProductExists(product.id))) {
       throw new NotFoundException('Product not found.');
     }
 
-    const productIsInWishlist = this.checkIfProductExists(product.id);
+    const productIsInWishlist = this.validateProductExists(
+      product.id,
+      wishList,
+    );
 
     if (!productIsInWishlist) {
       const wishListProduct: WishlistProductModel = {
@@ -33,15 +40,13 @@ export class WishlistProductService {
         addAt: new Date(),
       };
       wishList.products.push(wishListProduct);
-      //logica pra persistir no banco do serviço REST
+      await this.wishlistHttpClient.saveWishlist(wishList);
 
       return {
         added: true,
         message: 'Product added to wishlist successfully.',
       };
     }
-
-    console.log(wishList);
 
     return {
       added: false,
@@ -50,9 +55,10 @@ export class WishlistProductService {
   }
 
   async removeProduct(productId: string): Promise<RemoveProductResponse> {
-    const wishList = getWishlist();
+    const wishList: WishlistModel =
+      await this.wishlistHttpClient.getWishlistByUserId('2');
 
-    const productIsInWishlist = this.checkIfProductExists(productId);
+    const productIsInWishlist = this.validateProductExists(productId, wishList);
 
     if (!productIsInWishlist) {
       return {
@@ -61,21 +67,24 @@ export class WishlistProductService {
       };
     }
 
-    const withListToUpdate = wishList.products.filter(
+    wishList.products = wishList.products.filter(
       (product) => product.id !== productId,
     );
-
-    console.log(withListToUpdate);
-    //logica para persistir no banco do serviço REST
+    await this.wishlistHttpClient.saveWishlist(wishList);
     return {
       removed: true,
       message: 'Product removed from wishlist successfully.',
     };
   }
 
-  checkIfProductExists(productId: string): boolean {
-    const wishList = getWishlist();
+  async checkIfProductExists(productId: string) {
+    const wishList: WishlistModel =
+      await this.wishlistHttpClient.getWishlistByUserId('2');
 
+    return this.validateProductExists(productId, wishList);
+  }
+
+  validateProductExists(productId: string, wishList: WishlistModel): boolean {
     if (!wishList) {
       throw new NotFoundException('Wishlist not found.');
     }
@@ -84,7 +93,8 @@ export class WishlistProductService {
   }
 
   async listProducts() {
-    const wishList = getWishlist();
+    const wishList: WishlistModel =
+      await this.wishlistHttpClient.getWishlistByUserId('2');
 
     if (!wishList) {
       throw new NotFoundException('Wishlist not found.');
@@ -110,7 +120,7 @@ export class WishlistProductService {
     productIds: string[],
   ): Promise<ProductModel[]> {
     return await Promise.all(
-      productIds.map((id) => this.productHttpClient.getProductById(id)),
+      productIds.map((id) => this.productHttpClient.getById(id)),
     );
   }
 }

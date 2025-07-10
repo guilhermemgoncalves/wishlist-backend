@@ -8,6 +8,7 @@ import { JwtSetup } from './config/jwt-setup';
 import { WishlistProductService } from './domain/use-case/wishlist-product/wishlist-product.service';
 import { UserHttpClientImpl } from './infrastructure/http/user-http-client-impl';
 import { UserService } from './domain/use-case/user/user.service';
+import { WishlistHttpClientImpl } from './infrastructure/http/wishlist-http-client.impl';
 
 @Module({
   imports: [HttpModule, JwtSetup],
@@ -22,6 +23,10 @@ import { UserService } from './domain/use-case/user/user.service';
     {
       provide: 'UserHttpClient',
       useClass: UserHttpClientImpl,
+    },
+    {
+      provide: 'WishlistHttpClient',
+      useClass: WishlistHttpClientImpl,
     },
   ],
 })
