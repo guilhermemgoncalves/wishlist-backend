@@ -16,7 +16,6 @@ export class WishlistHttpClientImpl implements WishlistHttpClient {
   async getWishlistByUserId(userId: string): Promise<WishlistModel> {
     const url =
       this.configService.get<string>('SERVICE_URL') || process.env.SERVICE_URL;
-    console.log(url);
     try {
       const response = this.httpService.get<WishlistModel>(
         `${url}/wishlist/${userId}`,

@@ -8,6 +8,7 @@ import { WishlistProductService } from './domain/use-case/wishlist-product/wishl
 import { UserService } from './domain/use-case/user/user.service';
 import { DependencyInjectionConfig } from './config/dependency-injection.config';
 import { ConfigModule } from '@nestjs/config';
+import { ProductService } from './domain/use-case/product/product.service';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule } from '@nestjs/config';
   ],
   controllers: [AuthenticationController, WishlistController],
   providers: [
+    ProductService,
     UserService,
     WishlistProductService,
     ...DependencyInjectionConfig,

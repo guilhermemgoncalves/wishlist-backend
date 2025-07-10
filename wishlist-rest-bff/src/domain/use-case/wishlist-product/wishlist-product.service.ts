@@ -1,5 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ProductHttpClient } from '../../interfaces/product-http-client';
 import { ProductModel } from '../../models/product-model';
 import { WishlistProductModel } from '../../models/wishlist-product.model';
 import { AddProductResponse } from '../../../application/dtos/add-product-response.dto';
@@ -10,12 +9,12 @@ import { UserModel } from '../../models/user-model';
 import { UserService } from '../user/user.service';
 import { WishlistHttpClient } from '../../interfaces/wishlist-http-client';
 import { WishlistModel } from '../../models/wishlist-model';
+import { ProductService } from '../product/product.service';
 
 @Injectable()
 export class WishlistProductService {
   constructor(
-    @Inject('ProductHttpClient')
-    private readonly productHttpClient: ProductHttpClient,
+    private readonly productService: ProductService,
     private readonly userService: UserService,
     @Inject('WishlistHttpClient')
     private readonly wishlistHttpClient: WishlistHttpClient,
@@ -28,7 +27,10 @@ export class WishlistProductService {
     const wishList: WishlistModel =
       await this.wishlistHttpClient.getWishlistByUserId(userId);
 
-    if (!(await this.productHttpClient.checkIfProductExists(product.id))) {
+    const productExists: boolean = await this.productService.productExists(
+      product.id,
+    );
+    if (!productExists) {
       throw new NotFoundException('Product not found.');
     }
 
@@ -97,14 +99,6 @@ export class WishlistProductService {
     return this.validateProductExists(productId, wishList);
   }
 
-  validateProductExists(productId: string, wishList: WishlistModel): boolean {
-    if (!wishList) {
-      throw new NotFoundException('Wishlist not found.');
-    }
-
-    return wishList.products.some((x) => x.id === productId);
-  }
-
   async listProducts(userId: string) {
     const wishList: WishlistModel =
       await this.wishlistHttpClient.getWishlistByUserId(userId);
@@ -133,7 +127,18 @@ export class WishlistProductService {
     productIds: string[],
   ): Promise<ProductModel[]> {
     return await Promise.all(
-      productIds.map((id) => this.productHttpClient.getById(id)),
+      productIds.map((id) => this.productService.getById(id)),
     );
+  }
+
+  private validateProductExists(
+    productId: string,
+    wishList: WishlistModel,
+  ): boolean {
+    if (!wishList) {
+      throw new NotFoundException('Wishlist not found.');
+    }
+
+    return wishList.products.some((x) => x.id === productId);
   }
 }
