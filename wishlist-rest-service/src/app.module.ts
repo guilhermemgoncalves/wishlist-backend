@@ -5,6 +5,7 @@ import { WishlistMongoRepositoryImpl } from './infrastructure/mongodb/wishlist-r
 import { WISHLIST_REPOSITORY } from './domain/interfaces/wishlist-repository';
 import { WishlistEntity } from './domain/entities/wishlist-entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { WishlistSeeder } from './config/wishslist-mongo-seeder';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   controllers: [WishlistController],
   providers: [
+    WishlistSeeder,
     {
       provide: WISHLIST_REPOSITORY,
       useClass: WishlistMongoRepositoryImpl,

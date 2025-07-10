@@ -21,9 +21,12 @@ export class WishlistProductService {
     private readonly wishlistHttpClient: WishlistHttpClient,
   ) {}
 
-  async addProduct(product: AddProductRequest): Promise<AddProductResponse> {
+  async addProduct(
+    product: AddProductRequest,
+    userId: string,
+  ): Promise<AddProductResponse> {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId('2');
+      await this.wishlistHttpClient.getWishlistByUserId(userId);
 
     if (!(await this.productHttpClient.checkIfProductExists(product.id))) {
       throw new NotFoundException('Product not found.');
@@ -54,9 +57,12 @@ export class WishlistProductService {
     };
   }
 
-  async removeProduct(productId: string): Promise<RemoveProductResponse> {
+  async removeProduct(
+    productId: string,
+    userId: string,
+  ): Promise<RemoveProductResponse> {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId('2');
+      await this.wishlistHttpClient.getWishlistByUserId(userId);
 
     const productIsInWishlist = this.validateProductExists(productId, wishList);
 
@@ -77,9 +83,9 @@ export class WishlistProductService {
     };
   }
 
-  async checkIfProductExists(productId: string) {
+  async checkIfProductExists(productId: string, userId: string) {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId('2');
+      await this.wishlistHttpClient.getWishlistByUserId(userId);
 
     return this.validateProductExists(productId, wishList);
   }
@@ -92,9 +98,9 @@ export class WishlistProductService {
     return wishList.products.some((x) => x.id === productId);
   }
 
-  async listProducts() {
+  async listProducts(userId: string) {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId('2');
+      await this.wishlistHttpClient.getWishlistByUserId(userId);
 
     if (!wishList) {
       throw new NotFoundException('Wishlist not found.');

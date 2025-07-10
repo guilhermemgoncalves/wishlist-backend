@@ -7,7 +7,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
   Res,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
@@ -17,8 +19,10 @@ import { WishlistProductService } from '../../../domain/use-case/wishlist-produc
 import { Response } from 'express';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
 import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
+import { JwtAuthGuard } from '../../../core/guards/jwt-auth/jwt-auth.guard';
 
 @Controller('wishlist')
+@UseGuards(JwtAuthGuard)
 export class WishlistController {
   constructor(private readonly service: WishlistProductService) {}
 
@@ -27,8 +31,13 @@ export class WishlistController {
   async add(
     @Body(new ValidationPipe()) dto: AddProductRequest,
     @Res() res: Response,
+    @Req() req: Request,
   ) {
-    const result: AddProductResponse = await this.service.addProduct(dto);
+    const userId = String(req['userId'] ?? '');
+    const result: AddProductResponse = await this.service.addProduct(
+      dto,
+      userId,
+    );
 
     const status: HttpStatus = result.added
       ? HttpStatus.CREATED
@@ -41,9 +50,16 @@ export class WishlistController {
 
   @Delete('items/:productId')
   @ApiOperation({ summary: 'Remove a wishlist product' })
-  async remove(@Param('productId') productId: string, @Res() res: Response) {
-    const result: RemoveProductResponse =
-      await this.service.removeProduct(productId);
+  async remove(
+    @Param('productId') productId: string,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
+    const userId = String(req['userId'] ?? '');
+    const result: RemoveProductResponse = await this.service.removeProduct(
+      productId,
+      userId,
+    );
 
     const status: HttpStatus = result.removed
       ? HttpStatus.OK
@@ -55,14 +71,16 @@ export class WishlistController {
 
   @Get('items')
   @ApiOperation({ summary: 'List all wishlist products' })
-  list() {
-    return this.service.listProducts();
+  list(@Req() req: Request) {
+    const userId = String(req['userId'] ?? '');
+    return this.service.listProducts(userId);
   }
 
   @Get('items/:productId')
   @ApiOperation({ summary: 'Checks if a wishlist product exists' })
   @HttpCode(HttpStatus.OK)
-  exists(@Param('productId') productId: string) {
-    return this.service.checkIfProductExists(productId);
+  exists(@Param('productId') productId: string, @Req() req: Request) {
+    const userId = String(req['userId'] ?? '');
+    return this.service.checkIfProductExists(productId, userId);
   }
 }
