@@ -28,7 +28,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      - MONGO_URL=mongodb://mongodb:27017/wishlist
+      - MONGO_URL=mongodb://mongodb:27017/wishlist-db
 
   bff:
     build:
@@ -39,6 +39,9 @@ services:
     depends_on:
       - service
       - json-server
+    environment:
+      SERVICE_URL: http://service:3001
+      JSON_SERVER_URL: http://json-server:80
 
 volumes:
   mongo_data:

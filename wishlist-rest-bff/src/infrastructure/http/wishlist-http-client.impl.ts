@@ -1,18 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { WishlistHttpClient } from '../../domain/interfaces/wishlist-http-client';
 import { WishlistModel } from 'src/domain/models/wishlist-model';
-import { API_URL } from '../../config/api-url-enum';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import process from 'node:process';
 
 @Injectable()
 export class WishlistHttpClientImpl implements WishlistHttpClient {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async getWishlistByUserId(userId: string): Promise<WishlistModel> {
+    const url =
+      this.configService.get<string>('SERVICE_URL') || process.env.SERVICE_URL;
+    console.log(url);
     try {
       const response = this.httpService.get<WishlistModel>(
-        `${API_URL.WISHLIST_REST_SERVICE}/wishlist/${userId}`,
+        `${url}/wishlist/${userId}`,
       );
 
       const axiosResponse = await firstValueFrom(response);
@@ -24,12 +31,10 @@ export class WishlistHttpClientImpl implements WishlistHttpClient {
   }
 
   async saveWishlist(wishlist: WishlistModel): Promise<void> {
+    const url = this.configService.get<string>('SERVICE_URL') || '';
     try {
       await firstValueFrom(
-        this.httpService.put(
-          `${API_URL.WISHLIST_REST_SERVICE}/wishlist/${wishlist.userId}`,
-          wishlist,
-        ),
+        this.httpService.put(`${url}/wishlist/${wishlist.userId}`, wishlist),
       );
     } catch {
       throw new NotFoundException('WISHLIST_SERVICE_ERROR');

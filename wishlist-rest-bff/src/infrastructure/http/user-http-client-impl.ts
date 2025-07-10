@@ -2,17 +2,23 @@ import { Injectable, HttpStatus, NotFoundException } from '@nestjs/common';
 import { UserHttpClient } from '../../domain/interfaces/user-http-client';
 import { HttpService } from '@nestjs/axios';
 import { UserModel } from 'src/domain/models/user-model';
-import { API_URL } from '../../config/api-url-enum';
 import { firstValueFrom } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserHttpClientImpl implements UserHttpClient {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async getUserById(userId: string): Promise<UserModel> {
+    const jsonServerUrl =
+      this.configService.get<string>('JSON_SERVER_URL') || '';
+
     try {
       const response = this.httpService.get<UserModel>(
-        `${API_URL.JSON_SERVER}/users/${userId}`,
+        `${jsonServerUrl}/users/${userId}`,
       );
 
       const axiosResponse = await firstValueFrom(response);

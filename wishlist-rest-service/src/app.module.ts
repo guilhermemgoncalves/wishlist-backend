@@ -6,15 +6,24 @@ import { WISHLIST_REPOSITORY } from './domain/interfaces/wishlist-repository';
 import { WishlistEntity } from './domain/entities/wishlist-entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WishlistSeeder } from './config/wishslist-mongo-seeder';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: 'mongodb://localhost:27017/wishlist-db',
-      entities: [WishlistEntity],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mongodb',
+        url: configService.get<string>('MONGO_URL'),
+        entities: [WishlistEntity],
+        synchronize: true,
+      }),
+    }),
+
     TypeOrmModule.forFeature([WishlistEntity]),
   ],
   controllers: [WishlistController],
