@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   HttpStatus,
   Param,
   Post,
@@ -12,10 +11,9 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { AddProductRequest } from '../../dtos/add-product.request';
 import { AddProductDoc } from '../../documentation/add-product-doc';
-import { WishlistProductService } from '../../../domain/use-case/wishlist-product/wishlist-product.service';
+import { WishlistProductService } from '../../use-case/wishlist-product/wishlist-product.service';
 import { Response } from 'express';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
 import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';

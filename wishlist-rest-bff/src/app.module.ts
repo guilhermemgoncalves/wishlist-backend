@@ -4,11 +4,11 @@ import { WishlistController } from './application/controllers/wishlist/wishlist.
 import { HttpModule } from '@nestjs/axios';
 import { AuthenticationController } from './application/controllers/authentication/authentication.controller';
 import { JwtSetup } from './config/jwt-setup';
-import { WishlistProductService } from './domain/use-case/wishlist-product/wishlist-product.service';
-import { UserService } from './domain/use-case/user/user.service';
+import { WishlistProductService } from './application/use-case/wishlist-product/wishlist-product.service';
+import { UserService } from './domain/services/user/user.service';
 import { DependencyInjectionConfig } from './config/dependency-injection.config';
 import { ConfigModule } from '@nestjs/config';
-import { ProductService } from './domain/use-case/product/product.service';
+import { ProductService } from './domain/services/product/product.service';
 
 @Module({
   imports: [

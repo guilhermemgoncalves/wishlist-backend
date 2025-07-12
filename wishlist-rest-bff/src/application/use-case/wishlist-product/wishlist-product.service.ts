@@ -1,23 +1,22 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ProductModel } from '../../models/product-model';
-import { WishlistProductModel } from '../../models/wishlist-product.model';
-import { AddProductResponse } from '../../../application/dtos/add-product-response.dto';
-import { AddProductRequest } from '../../../application/dtos/add-product.request';
-import { RemoveProductResponse } from '../../../application/dtos/remove-product.response.dto';
-import { WishlistListResponse } from '../../../application/dtos/wishlist-list-response.dto';
-import { UserModel } from '../../models/user-model';
-import { UserService } from '../user/user.service';
-import { WishlistHttpClient } from '../../interfaces/wishlist-http-client';
-import { WishlistModel } from '../../models/wishlist-model';
-import { ProductService } from '../product/product.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ProductModel } from '../../../domain/models/product-model';
+import { WishlistProductModel } from '../../../domain/models/wishlist-product.model';
+import { AddProductResponse } from '../../dtos/add-product-response.dto';
+import { AddProductRequest } from '../../dtos/add-product.request';
+import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
+import { WishlistListResponse } from '../../dtos/wishlist-list-response.dto';
+import { UserModel } from '../../../domain/models/user-model';
+import { UserService } from '../../../domain/services/user/user.service';
+import { WishlistModel } from '../../../domain/models/wishlist-model';
+import { ProductService } from '../../../domain/services/product/product.service';
+import { WishlistService } from '../../../domain/services/wishlist/wishlist.service';
 
 @Injectable()
 export class WishlistProductService {
   constructor(
     private readonly productService: ProductService,
     private readonly userService: UserService,
-    @Inject('WishlistHttpClient')
-    private readonly wishlistHttpClient: WishlistHttpClient,
+    private readonly wishListService: WishlistService,
   ) {}
 
   async addProduct(
@@ -25,7 +24,7 @@ export class WishlistProductService {
     userId: string,
   ): Promise<AddProductResponse> {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId(userId);
+      await this.wishListService.getWishlistByUserId(userId);
 
     const productExists: boolean = await this.productService.productExists(
       product.id,
@@ -52,7 +51,7 @@ export class WishlistProductService {
         addAt: new Date(),
       };
       wishList.products.push(wishListProduct);
-      await this.wishlistHttpClient.saveWishlist(wishList);
+      await this.wishListService.update(wishList);
 
       return {
         added: true,
@@ -71,7 +70,7 @@ export class WishlistProductService {
     userId: string,
   ): Promise<RemoveProductResponse> {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId(userId);
+      await this.wishListService.getWishlistByUserId(userId);
 
     const productIsInWishlist = this.validateProductExists(productId, wishList);
 
@@ -85,7 +84,7 @@ export class WishlistProductService {
     wishList.products = wishList.products.filter(
       (product) => product.id !== productId,
     );
-    await this.wishlistHttpClient.saveWishlist(wishList);
+    await this.wishListService.update(wishList);
     return {
       removed: true,
       message: 'Product removed from wishlist successfully.',
@@ -94,14 +93,14 @@ export class WishlistProductService {
 
   async checkIfProductExists(productId: string, userId: string) {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId(userId);
+      await this.wishListService.getWishlistByUserId(userId);
 
     return this.validateProductExists(productId, wishList);
   }
 
   async listProducts(userId: string) {
     const wishList: WishlistModel =
-      await this.wishlistHttpClient.getWishlistByUserId(userId);
+      await this.wishListService.getWishlistByUserId(userId);
 
     if (!wishList) {
       throw new NotFoundException('Wishlist not found.');
