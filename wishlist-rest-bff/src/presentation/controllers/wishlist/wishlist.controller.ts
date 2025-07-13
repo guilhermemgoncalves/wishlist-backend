@@ -11,9 +11,8 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { AddProductRequest } from '../../dtos/add-product.request';
+import { AddProductRequest } from '../../dtos/add-product.request.dto';
 import { AddProductDoc } from '../../documentation/add-product-doc';
-import { WishlistProductService } from '../../use-case/wishlist-product/wishlist-product.service';
 import { Response } from 'express';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
 import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
@@ -21,11 +20,20 @@ import { JwtAuthGuard } from '../../../core/guards/jwt-auth/jwt-auth.guard';
 import { RemoveProductDoc } from '../../documentation/remove-product-doc';
 import { ListWishlistProductsDoc } from '../../documentation/list-products-doc';
 import { CheckExistsDoc } from '../../documentation/check-exists-doc';
+import { AddProductUseCase } from '../../../application/use-case/add-product-use-case';
+import { RemoveProductUseCase } from '../../../application/use-case/remove-product-use-case';
+import { CheckIfProductExistsUseCase } from '../../../application/use-case/check-if-product-exists-use-case';
+import { ListProductsUseCase } from '../../../application/use-case/list-products-use-case';
 
 @Controller('wishlist')
 @UseGuards(JwtAuthGuard)
 export class WishlistController {
-  constructor(private readonly service: WishlistProductService) {}
+  constructor(
+    private readonly addProductUseCase: AddProductUseCase,
+    private readonly checkIfProductExistsUseCase: CheckIfProductExistsUseCase,
+    private readonly listProductsUseCase: ListProductsUseCase,
+    private readonly removeProductUseCase: RemoveProductUseCase,
+  ) {}
 
   @Post('items')
   @AddProductDoc()
@@ -35,7 +43,7 @@ export class WishlistController {
     @Req() req: Request,
   ) {
     const userId = String(req['userId'] ?? '');
-    const result: AddProductResponse = await this.service.addProduct(
+    const result: AddProductResponse = await this.addProductUseCase.execute(
       dto,
       userId,
     );
@@ -51,36 +59,27 @@ export class WishlistController {
 
   @Delete('items/:productId')
   @RemoveProductDoc()
-  async remove(
-    @Param('productId') productId: string,
-    @Res() res: Response,
-    @Req() req: Request,
-  ) {
+  async remove(@Param('productId') productId: string, @Req() req: Request) {
     const userId = String(req['userId'] ?? '');
-    const result: RemoveProductResponse = await this.service.removeProduct(
-      productId,
-      userId,
-    );
+    const result: RemoveProductResponse =
+      await this.removeProductUseCase.execute(productId, userId);
 
-    const status: HttpStatus = result.removed
-      ? HttpStatus.OK
-      : HttpStatus.NO_CONTENT;
-    return res.status(status).json({
+    return {
       data: result,
-    });
+    };
   }
 
   @Get('items')
   @ListWishlistProductsDoc()
   list(@Req() req: Request) {
     const userId = String(req['userId'] ?? '');
-    return this.service.listProducts(userId);
+    return this.listProductsUseCase.execute(userId);
   }
 
-  @Get('items/:productId')
+  @Get('items/exists/:productId')
   @CheckExistsDoc()
   exists(@Param('productId') productId: string, @Req() req: Request) {
     const userId = String(req['userId'] ?? '');
-    return this.service.checkIfProductExists(productId, userId);
+    return this.checkIfProductExistsUseCase.execute(productId, userId);
   }
 }

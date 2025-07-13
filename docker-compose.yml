@@ -42,6 +42,7 @@ services:
     environment:
       SERVICE_URL: http://service:3001
       JSON_SERVER_URL: http://json-server:80
+      JWT_SECRET: 5bbb2a88-6a96-4dfa-966c-742461b748a9
 
 volumes:
   mongo_data:

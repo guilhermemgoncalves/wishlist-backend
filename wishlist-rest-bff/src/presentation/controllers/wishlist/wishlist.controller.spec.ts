@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WishlistController } from './wishlist.controller';
 import { WishlistProductService } from '../../use-case/wishlist-product/wishlist-product.service';
-import { AddProductRequest } from '../../dtos/add-product.request';
+import { AddProductRequest } from '../../dtos/add-product.request.dto';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
 import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
 import { JwtAuthGuard } from '../../../core/guards/jwt-auth/jwt-auth.guard';

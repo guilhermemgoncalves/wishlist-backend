@@ -99,13 +99,17 @@ Cole o token e confirme. Agora todos os endpoints estarão autenticados e pronto
 
 ## Informações Adicionais
 
+- Visando exploração maior do framework, a autenticação foi implementada com JWT, mas não há controle de acesso real.
+- Para simplificação do código, os use-cases foram anotados com `@Injectable` e disponibilizada como um provider do NestJS, evitando a criação de uma camada de injeção de serviços separada.
 - Os endpoints funcionam de forma **independente**, não exigem chamadas em ordem.
 - Se um produto já está presente na wishlist, o backend **não retorna erro**, apenas ajusta o **status code** adequadamente.
 - Erros reais só ocorrem em casos de **falha externa**, como indisponibilidade de serviços HTTP simulados.
-.
+- Arquivos .env e docker compose com environmets comitados são propositais para o teste da aplicação.
+
 
 ## Próximos Passos
 
+- 🔃 **Criar mappers para transformaçao**: Gerar mappers de DTOs em entidades e vice-versa.   
 - 🔧 **Padronizar mensagens de erro**: melhorar clareza e debuggabilidade.
 - 🧪 **Adicionar testes unitários**: garantir estabilidade e qualidade do código.
 - 🚀 **Melhorar performance**: otimizar interações com o MongoDB.

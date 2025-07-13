@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { WishlistHttpClient } from '../../domain/interfaces/wishlist-http-client';
-import { WishlistModel } from 'src/domain/models/wishlist-model';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import process from 'node:process';
+import { WishlistDto } from '../dto/wishlist.dto';
 
 @Injectable()
 export class WishlistHttpClientImpl implements WishlistHttpClient {
@@ -13,11 +13,11 @@ export class WishlistHttpClientImpl implements WishlistHttpClient {
     private readonly configService: ConfigService,
   ) {}
 
-  async getWishlistByUserId(userId: string): Promise<WishlistModel> {
+  async getWishlistByUserId(userId: string): Promise<WishlistDto> {
     const url =
       this.configService.get<string>('SERVICE_URL') || process.env.SERVICE_URL;
     try {
-      const response = this.httpService.get<WishlistModel>(
+      const response = this.httpService.get<WishlistDto>(
         `${url}/wishlist/${userId}`,
       );
 
@@ -29,7 +29,7 @@ export class WishlistHttpClientImpl implements WishlistHttpClient {
     }
   }
 
-  async saveWishlist(wishlist: WishlistModel): Promise<void> {
+  async saveWishlist(wishlist: WishlistDto): Promise<void> {
     const url = this.configService.get<string>('SERVICE_URL') || '';
     try {
       await firstValueFrom(
