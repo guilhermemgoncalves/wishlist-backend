@@ -1,6 +1,6 @@
 import { WishlistService } from '../../domain/services/wishlist/wishlist.service';
 import { ProductService } from '../../domain/services/product/product.service';
-import { RemoveProductResponse } from '../../presentation/dtos/remove-product.response.dto';
+import { RemoveProductResponse } from '../../presentation/rest/dtos/remove-product.response.dto';
 import { WishlistModel } from '../../domain/models/wishlist-model';
 import { Injectable } from '@nestjs/common';
 

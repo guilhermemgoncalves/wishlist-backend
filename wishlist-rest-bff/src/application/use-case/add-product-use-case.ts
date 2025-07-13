@@ -1,5 +1,5 @@
-import { AddProductRequest } from '../../presentation/dtos/add-product.request.dto';
-import { AddProductResponse } from '../../presentation/dtos/add-product-response.dto';
+import { AddProductRequest } from '../../presentation/rest/dtos/add-product.request.dto';
+import { AddProductResponse } from '../../presentation/rest/dtos/add-product-response.dto';
 import { WishlistModel } from '../../domain/models/wishlist-model';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { WishlistProductModel } from '../../domain/models/wishlist-product.model';

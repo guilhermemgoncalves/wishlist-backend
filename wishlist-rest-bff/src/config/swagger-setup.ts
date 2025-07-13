@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AddProductResponse } from '../presentation/dtos/add-product-response.dto';
-import { RemoveProductResponse } from '../presentation/dtos/remove-product.response.dto';
-import { WishlistListResponse } from '../presentation/dtos/wishlist-list-response.dto';
+import { AddProductResponse } from '../presentation/rest/dtos/add-product-response.dto';
+import { RemoveProductResponse } from '../presentation/rest/dtos/remove-product.response.dto';
+import { WishlistListResponse } from '../presentation/rest/dtos/wishlist-list-response.dto';
 
 export function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()

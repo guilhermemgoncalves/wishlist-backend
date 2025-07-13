@@ -11,19 +11,19 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { AddProductRequest } from '../../dtos/add-product.request.dto';
-import { AddProductDoc } from '../../documentation/add-product-doc';
 import { Response } from 'express';
+import { JwtAuthGuard } from '../../../../core/guards/jwt-auth/jwt-auth.guard';
+import { CheckIfProductExistsUseCase } from '../../../../application/use-case/check-if-product-exists-use-case';
+import { AddProductUseCase } from '../../../../application/use-case/add-product-use-case';
+import { ListProductsUseCase } from '../../../../application/use-case/list-products-use-case';
+import { RemoveProductUseCase } from '../../../../application/use-case/remove-product-use-case';
+import { AddProductDoc } from '../../documentation/add-product-doc';
+import { AddProductRequest } from '../../dtos/add-product.request.dto';
 import { AddProductResponse } from '../../dtos/add-product-response.dto';
-import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
-import { JwtAuthGuard } from '../../../core/guards/jwt-auth/jwt-auth.guard';
 import { RemoveProductDoc } from '../../documentation/remove-product-doc';
+import { RemoveProductResponse } from '../../dtos/remove-product.response.dto';
 import { ListWishlistProductsDoc } from '../../documentation/list-products-doc';
 import { CheckExistsDoc } from '../../documentation/check-exists-doc';
-import { AddProductUseCase } from '../../../application/use-case/add-product-use-case';
-import { RemoveProductUseCase } from '../../../application/use-case/remove-product-use-case';
-import { CheckIfProductExistsUseCase } from '../../../application/use-case/check-if-product-exists-use-case';
-import { ListProductsUseCase } from '../../../application/use-case/list-products-use-case';
 
 @Controller('wishlist')
 @UseGuards(JwtAuthGuard)

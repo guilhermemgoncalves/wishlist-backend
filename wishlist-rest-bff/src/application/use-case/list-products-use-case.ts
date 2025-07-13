@@ -3,7 +3,7 @@ import { ProductService } from '../../domain/services/product/product.service';
 import { WishlistService } from '../../domain/services/wishlist/wishlist.service';
 import { WishlistModel } from '../../domain/models/wishlist-model';
 import { ProductModel } from '../../domain/models/product-model';
-import { WishlistListResponse } from '../../presentation/dtos/wishlist-list-response.dto';
+import { WishlistListResponse } from '../../presentation/rest/dtos/wishlist-list-response.dto';
 import { WishlistProductModel } from '../../domain/models/wishlist-product.model';
 
 @Injectable()
@@ -36,9 +36,9 @@ export class ListProductsUseCase {
         return {
           id: productData.id,
           name: productData.name,
-          price: productData.price,
+          price: parseFloat(productData.price.toFixed(2)),
           category: productData.category,
-          addAt: product.addAt,
+          addAt: new Date(product.addAt),
         };
       }),
     );

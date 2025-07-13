@@ -1,8 +1,8 @@
 import { Controller, Get, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AUTHENTICATION_CONFIG } from '../../../config/authentication-config';
-import { UserModel } from '../../../domain/models/user-model';
-import { UserService } from '../../../domain/services/user/user.service';
+import { AUTHENTICATION_CONFIG } from '../../../../config/authentication-config';
+import { UserModel } from '../../../../domain/models/user-model';
+import { UserService } from '../../../../domain/services/user/user.service';
 
 //mock controller that's generates a JWT token
 @Controller('authentication')
