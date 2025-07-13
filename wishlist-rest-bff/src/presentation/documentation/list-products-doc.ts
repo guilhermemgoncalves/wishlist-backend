@@ -11,6 +11,11 @@ export function ListWishlistProductsDoc() {
       schema: {
         type: 'object',
         properties: {
+          count: {
+            type: 'number',
+            example: 1,
+            description: 'Total number of products in the wishlist',
+          },
           data: {
             type: 'array',
             items: {

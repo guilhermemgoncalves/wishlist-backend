@@ -22,6 +22,8 @@ export class ResponseInterceptor implements NestInterceptor {
           data === undefined ||
           (Array.isArray(data) && data.length === 0);
 
+        const count = Array.isArray(data) ? data.length : 0;
+
         const status: HttpStatus = isEmpty
           ? HttpStatus.NO_CONTENT
           : HttpStatus.OK;
@@ -29,6 +31,7 @@ export class ResponseInterceptor implements NestInterceptor {
         res.status(status);
 
         return {
+          count: count ? count : null,
           data: isEmpty ? null : data,
         };
       }),
