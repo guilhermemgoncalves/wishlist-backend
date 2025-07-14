@@ -21,7 +21,8 @@ O **Wishlist Backend** é um serviço dedicado à gestão de listas de desejos, 
 
 - **Framework Backend**: Node.js com NestJS
 - **Banco de Dados**: MongoDB
-- **API**: RESTful
+- **API**: REST
+- **GraphQL**: Implementação opcional para consultas avançadas
 - **Integração**: Comunicação direta com a camada BFF
 
 ---
@@ -273,4 +274,4 @@ Resultado esperado:
 - 🔧 **Padronizar mensagens de erro**: melhorar clareza e debuggabilidade.
 - 🧪 **Adicionar testes unitários**: garantir estabilidade e qualidade do código.
 - 💡 **Melhorar Observabilidade e resiliencia** Adicionar retry policies, caching, logging, tracing e circuit breakers, para melhorar a experiencia do consumo da aplicação, reduzindo o downtime .
-- 🔗 **Adicionar mais segregação**: Alguns DTOs e serviços podem ser mais segregados, porem a ideia foi mostrar o macro do uso da arquitetura limpa
+- 🔗 **Aprimorar segregação**: Alguns DTOs e serviços podem ser mais segregados, porem a ideia foi mostrar o macro do uso da arquitetura limpa
