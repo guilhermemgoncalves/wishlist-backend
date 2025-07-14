@@ -28,12 +28,40 @@ O **Wishlist Backend** é um serviço dedicado à gestão de listas de desejos, 
 
 ## Como Iniciar o Projeto
 
+Existem duas formas de instalar a aplicação
+
+
+1. **Docker**: Utilize o Docker para subir a aplicação e o banco de dados MongoDB.
+
 A aplicação utiliza um arquivo `docker-compose.yml` para subir os serviços necessários (NestJS + MongoDB). Execute os seguintes comandos no terminal para iniciar o ambiente:
 
 ```bash
 docker-compose down
 docker-compose build
 docker-compose up -d
+```
+
+
+
+2. **Instalação Local**: Clone o repositório e instale as dependências.
+É necessário que se tenha nodejs, npm e mongodb(portal padrão) instalados na máquina.
+
+### Instalando as dependências:
+Entre nas pastas
+
+wishlist-rest-service e wishlist-rest-bff e execute o seguinte comando:
+```bash
+npm install
+```
+Logo em seguida inicie o servidor NestJS nas respectivas pastas:
+```bash
+npm run dev
+```
+
+depois execute o comando abaixo para subir o servidor http mock do json server
+
+```bash
+npx json-server --watch db.json --port 3000
 ```
 
  
@@ -244,4 +272,5 @@ Resultado esperado:
 - 🔃 **Criar mappers para transformaçao**: Gerar mappers de DTOs em entidades e vice-versa.   
 - 🔧 **Padronizar mensagens de erro**: melhorar clareza e debuggabilidade.
 - 🧪 **Adicionar testes unitários**: garantir estabilidade e qualidade do código.
-- 
+- 💡 **Melhorar Observabilidade e resiliencia** Adicionar retry policies, caching, logging, tracing e circuit breakers, para melhorar a experiencia do consumo da aplicação, reduzindo o downtime .
+- 🔗 **Adicionar mais segregação**: Alguns DTOs e serviços podem ser mais segregados, porem a ideia foi mostrar o macro do uso da arquitetura limpa

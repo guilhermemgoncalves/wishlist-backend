@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { WishlistController } from './application/controller/wishlist/wishlist.controller';
-import { WishlistService } from './domain/services/wishlist/wishlist.service';
+import { WishlistController } from './presentation/controller/wishlist/wishlist.controller';
+import { WishlistService } from './application/services/wishlist/wishlist.service';
 import { WishlistMongoRepositoryImpl } from './infrastructure/mongodb/wishlist-repository.impl';
 import { WISHLIST_REPOSITORY } from './domain/interfaces/wishlist-repository';
 import { WishlistEntity } from './domain/entities/wishlist-entity';

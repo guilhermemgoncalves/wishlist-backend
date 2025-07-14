@@ -2,9 +2,9 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   WISHLIST_REPOSITORY,
   WishlistRepository,
-} from '../../interfaces/wishlist-repository';
-import { WishlistEntity } from '../../entities/wishlist-entity';
-import { WishlistDto } from '../../../application/dto/wishlist.dto';
+} from '../../../domain/interfaces/wishlist-repository';
+import { WishlistEntity } from '../../../domain/entities/wishlist-entity';
+import { WishlistDto } from '../../../presentation/dto/wishlist.dto';
 
 @Injectable()
 export class WishlistService {
