@@ -1,0 +1,51 @@
+{
+  "products": [
+    { "id": "1", "name": "Smartphone Samsung Galaxy S24 Ultra 256GB 5G", "price": 13999.00, "category": "Smartphones" },
+    { "id": "2", "name": "Notebook Dell XPS 13 Plus Intel Core i7 512GB SSD", "price": 8999.00, "category": "Notebooks" },
+    { "id": "3", "name": "Smart TV LG 55'' OLED 4K Dolby Vision", "price": 7499.90, "category": "TVs" },
+    { "id": "4", "name": "Fone Bluetooth Sony WH-1000XM5", "price": 2199.00, "category": "Áudio" },
+    { "id": "5", "name": "Apple iPhone 15 Pro Max 256GB", "price": 11999.00, "category": "Smartphones" },
+    { "id": "6", "name": "Monitor Samsung Odyssey 27'' 240Hz", "price": 2899.00, "category": "Monitores" },
+    { "id": "7", "name": "Console PlayStation 5 Slim", "price": 3899.00, "category": "Games" },
+    { "id": "8", "name": "Cafeteira Nespresso Essenza Mini", "price": 699.00, "category": "Eletrodomésticos" },
+    { "id": "9", "name": "Tablet Samsung Galaxy Tab S9 5G", "price": 5999.00, "category": "Tablets" },
+    { "id": "10", "name": "Roteador TP-Link AX5400 Wi-Fi 6", "price": 749.90, "category": "Redes" },
+    { "id": "11", "name": "Teclado Redragon Kumara RGB", "price": 229.00, "category": "Periféricos" },
+    { "id": "12", "name": "Câmera Segurança Intelbras Full HD", "price": 349.90, "category": "Segurança" },
+    { "id": "13", "name": "Smartwatch Amazfit GTR 4 com Alexa", "price": 1299.00, "category": "Wearables" },
+    { "id": "14", "name": "Ar Condicionado LG Dual Inverter 9000 BTUs", "price": 2799.00, "category": "Climatização" },
+    { "id": "15", "name": "Headset HyperX Cloud II 7.1", "price": 499.00, "category": "Áudio" },
+    { "id": "16", "name": "Impressora Epson Ecotank L3250 Wi-Fi", "price": 1099.00, "category": "Impressoras" },
+    { "id": "17", "name": "Drone DJI Mini 3 Pro 4K", "price": 6399.00, "category": "Drones" },
+    { "id": "18", "name": "Geladeira Brastemp Inverse 443L Inox", "price": 4899.00, "category": "Eletrodomésticos" },
+    { "id": "19", "name": "Echo Dot 5ª Geração com Relógio", "price": 379.00, "category": "Assistentes Virtuais" },
+    { "id": "20", "name": "Aspirador Robô Xiaomi Vacuum-Mop 2 Lite", "price": 1399.00, "category": "Casa Inteligente" },
+    { "id": "21", "name": "Notebook Lenovo IdeaPad 3i Intel i5", "price": 3599.00, "category": "Notebooks" },
+    { "id": "22", "name": "Mouse Gamer Logitech G502 Hero", "price": 299.00, "category": "Periféricos" },
+    { "id": "23", "name": "Lava e Seca LG Smart AI DD 11kg", "price": 3999.00, "category": "Eletrodomésticos" },
+    { "id": "24", "name": "Placa de Vídeo NVIDIA RTX 4060 8GB", "price": 2599.00, "category": "Hardware" },
+    { "id": "25", "name": "Controle Xbox Series X/S Original", "price": 399.00, "category": "Games" },
+    { "id": "26", "name": "Kindle 11ª Geração com Iluminação", "price": 499.00, "category": "Leitura" },
+    { "id": "27", "name": "HD Externo Seagate 2TB USB 3.0", "price": 399.00, "category": "Armazenamento" },
+    { "id": "28", "name": "Carregador Portátil Anker 20.000mAh", "price": 299.00, "category": "Acessórios" },
+    { "id": "29", "name": "Ventilador de Mesa Mondial VTX Turbo", "price": 179.00, "category": "Climatização" },
+    { "id": "30", "name": "Webcam Logitech C920 Full HD", "price": 499.00, "category": "Periféricos" }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Alice Souza",
+      "email": "alice@example.com"
+    },
+    {
+      "id": "2",
+      "name": "Bruno Lima",
+      "email": "bruno@example.com"
+    },
+    {
+      "id": "3",
+      "name": "Carla Mendes",
+      "email": "carla@example.com"
+    }
+  ]
+}

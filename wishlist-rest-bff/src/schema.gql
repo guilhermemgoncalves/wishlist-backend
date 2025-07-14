@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WishlistProductType {
+  id: ID!
+  name: String!
+  price: Float!
+  category: String!
+  addAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AddProductResponseType {
+  """Indicates if the product was added successfully."""
+  added: Boolean!
+
+  """Descriptive message of the operation result."""
+  message: String!
+}
+
+type RemoveProductResponseType {
+  removed: Boolean!
+  message: String
+}
+
+type Query {
+  wishlistProducts: [WishlistProductType!]!
+  checkProductExistsInWishlist(productId: String!): Boolean!
+}
+
+type Mutation {
+  addProductToWishlist(input: AddProductInput!): AddProductResponseType!
+  removeProductFromWishlist(productId: String!): RemoveProductResponseType!
+  generateToken: String!
+}
+
+input AddProductInput {
+  """ID of the product to be added"""
+  id: String!
+}

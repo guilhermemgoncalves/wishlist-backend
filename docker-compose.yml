@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo
+    container_name: wishlist-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: wishlist
+
+  json-server:
+    image: codfish/json-server
+    command: npm run dev
+    ports:
+      - "3000:80"
+    volumes:
+      - ./db.json:/app/db.json
+
+  service:
+    build:
+      context: ./wishlist-rest-service
+    container_name: wishlist-rest-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/wishlist-db
+
+  bff:
+    build:
+      context: ./wishlist-rest-bff
+    container_name: wishlist-rest-bff
+    ports:
+      - "3002:3002"
+    depends_on:
+      - service
+      - json-server
+    environment:
+      SERVICE_URL: http://service:3001
+      JSON_SERVER_URL: http://json-server:80
+      JWT_SECRET: 5bbb2a88-6a96-4dfa-966c-742461b748a9
+
+volumes:
+  mongo_data:
