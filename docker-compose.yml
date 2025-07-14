@@ -32,8 +32,8 @@ services:
 
   bff:
     build:
-      context: ./wishlist-rest-bff
-    container_name: wishlist-rest-bff
+      context: wishlist-bff
+    container_name: wishlist-bff
     ports:
       - "3002:3002"
     depends_on:
