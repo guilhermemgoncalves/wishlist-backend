@@ -13,6 +13,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../../../core/guards/gql-guard';
 
 @Resolver()
+@UseGuards(GqlAuthGuard)
 export class WishlistResolver {
   constructor(
     private readonly addProductUseCase: AddProductUseCase,
@@ -45,7 +46,6 @@ export class WishlistResolver {
     return this.removeProductUseCase.execute(productId, userId);
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => Boolean, { name: 'checkProductExistsInWishlist' })
   async checkExists(@Args('productId') productId: string): Promise<boolean> {
     const userId = '2'; // idem
