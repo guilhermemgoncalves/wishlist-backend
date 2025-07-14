@@ -55,11 +55,13 @@ A estrutura da aplicação segue boas práticas modernas:
 
 
 Para mocks de chamadas http foi utilizado o json-server, que simula o comportamento do backend para as entidades não gerenciadas
+___
+# REST BFF
 
 ## Como utilizar
 A documentação Swagger está disponível em (Após iniciar o docker): `http://localhost:3002/swagger-ui`
 
-## API Endpoints
+## API Endpoints 
 Para reproduzir o uso da aplicação é necessário os seguintes passos:
 
 ## Autenticação via Swagger
@@ -81,14 +83,144 @@ Cole o token e confirme. Agora todos os endpoints estarão autenticados e pronto
 
 ![img_2.png](assets/img_2.png)
 
-## Endpoints Disponíveis
+## Endpoints Disponíveis 
 
 - `GET /wishlist/items`: retorna a wishlist do usuário autenticado.
 - `POST /wishlist/items`: adiciona um item à wishlist.
 - `DELETE /wishlist/items/:id`: remove um item da wishlist.
 - `GET /wishlist/items/:id`: verifica se um item está presente na wishlist.
+___
+# GraphQL BFF
 
-## Preset de Dados para Testes
+## Como utilizar
+Para utilizar o GraphQL BFF, acesse a interface GraphQL Playground em `http://localhost:3002/graphql`.
+
+## API Endpoints
+Para reproduzir o uso da aplicação é necessário os seguintes passos:
+
+## Autenticação via GraphQL
+
+### 1. Obter token
+para obter o token é necessário executar a mutação:
+
+```graphql
+mutation {
+  generateToken
+}
+```
+Resultado esperado
+```json
+{
+  "data": {
+    "generateToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTc1MjQ1MDAzMSwiZXhwIjoxNzUzMDU0ODMxfQ.MNY0ExFN7YS2Iu3NV8zo1yiEMQZcRZ-Pzm_peMIncMA"
+  }
+}
+```
+
+
+### 2. Autorizar o token
+
+A cada chamada necessitamos utilzar o token gerado.
+como http header
+```graphql
+--Headers
+{
+  "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTc1MjQ1MDAzMSwiZXhwIjoxNzUzMDU0ODMxfQ.MNY0ExFN7YS2Iu3NV8zo1yiEMQZcRZ-Pzm_peMIncMA"
+}
+```
+
+### Operações Disponíveis
+- `query getWishlist`: retorna a wishlist do usuário autenticado.
+```graphql
+query {
+  wishlistProducts {
+    id
+    name
+    price
+    category
+    addAt
+  }
+}
+```
+
+Resultado esperado: 
+```json
+{
+  "data": {
+    "wishlistProducts": [
+      {
+        "id": 1,
+        "name": "Produto 1",
+        "price": 100,
+        "category": "Categoria A",
+        "addAt": "2023-10-01T00:00:00.000Z"
+      },
+      ...
+    ]
+  }
+}
+```
+
+- `mutation addProductToWishlist($productId: Int!)`: adiciona um item à wishlist.
+```graphql
+mutation {
+  addProductToWishlist(input: { id: "20" }) {
+    added
+    message
+  }
+}
+```
+Resultado esperado:
+```json
+{
+  "data": {
+    "addProductToWishlist": {
+      "added": true,
+      "message": "Produto adicionado com sucesso"
+    }
+  }
+}
+```
+
+- `mutation removeProductFromWishlist($productId: Int!)`: remove um item da wishlist.
+```graphql
+mutation {
+  removeProductFromWishlist(input: { id: "20" }) {
+    removed
+    message
+  }
+}
+```
+
+Resultado esperado:
+```json
+{
+  "data": {
+    "removeProductFromWishlist": {
+      "removed": true,
+      "message": "Produto removido com sucesso"
+    }
+  }
+}
+```
+
+- query checkProductInWishlist($productId: Int!): verifica se um item está presente na wishlist.
+```graphql
+query {
+  checkProductInWishlist(input: { id: "20" }) 
+}
+```
+Resultado esperado:
+```json
+{
+  "data": {
+    "checkProductInWishlist": true
+  }
+}
+```
+
+---
+# Preset de Dados para Testes
 
 - Um usuário com `userId: "2"` é pré-configurado com uma wishlist de **19 itens**.
 - Essa lista é criada automaticamente sempre que o container é iniciado.
@@ -112,5 +244,4 @@ Cole o token e confirme. Agora todos os endpoints estarão autenticados e pronto
 - 🔃 **Criar mappers para transformaçao**: Gerar mappers de DTOs em entidades e vice-versa.   
 - 🔧 **Padronizar mensagens de erro**: melhorar clareza e debuggabilidade.
 - 🧪 **Adicionar testes unitários**: garantir estabilidade e qualidade do código.
-- 🚀 **Melhorar performance**: otimizar interações com o MongoDB.
-- 🧬 **Avaliar uso de GraphQL**: fornecer queries mais flexíveis no futuro.
+- 
